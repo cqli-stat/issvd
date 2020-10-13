@@ -6,10 +6,6 @@ L1, MCP or SCAD penalty are supported.
 
 
 Installation
-To download and install msaenet from CRAN:
-
-install.packages("issvd")
-Or try the development version on GitHub:
 
 # install.packages("devtools")
 devtools::install_github("cqli_stat/issvd")
