@@ -1,0 +1,13 @@
+Package: issvd
+Type: Package
+Title: Integrative and Sparse Singular Value Decomposition
+Version: 0.1.0
+Author: Chuanquan Li,Xiaoyan Wang, Hongdong Li, Qing-Song Xu.
+Maintainer: Chuanquan Li <cqli1992@csu.edu.cn>
+Description: ISSVD: is a method to integrate multi-sources data for biclustering analysis. 
+License: GPL
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+NeedsCompilation: no
+Packaged: 2020-10-13 15:06:23 UTC; tk
