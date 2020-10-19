@@ -38,19 +38,18 @@ cv.issvd=function(x,ncomp,varnumv,varnumu,
    for(m in 1:len_varv){
     for(h in 1:len_varu){
 	percentRemove <- 1/nfolds
-	ratio=rep(0,nfolds)
 	total_error=rep(0,nfolds)
-	for(i in 1L:nfolds){
-       ToRemove=list()
-	  for(l in 1:K){
-	   	randmat <- matrix(stats::runif(nrow(x[[l]]) * ncol(x[[l]])),
+      for(i in 1L:nfolds){
+         ToRemove=list()
+	 for(l in 1:K){
+	   randmat <- matrix(stats::runif(nrow(x[[l]]) * ncol(x[[l]])),
 	   	                    ncol = ncol(x[[l]]))
-	   	ToRemove[[l]] <- ((i - 1) * percentRemove < randmat) & (randmat < i * percentRemove)
-	   	DATArm <- x
-	   	DATArm[[l]][ToRemove[[l]]] <- NA
-		for(c in 1:ncol(x[[l]])){
-           indexc <- !is.na(DATArm[[l]][, c])
-           DATArm[[l]][, c][!indexc] <- mean(DATArm[[l]][, c][indexc]) #missing values are replaced by column means
+	   ToRemove[[l]] <- ((i - 1) * percentRemove < randmat) & (randmat < i * percentRemove)
+	   DATArm <- x
+	   DATArm[[l]][ToRemove[[l]]] <- NA
+	   for(c in 1:ncol(x[[l]])){
+             indexc <- !is.na(DATArm[[l]][, c])
+             DATArm[[l]][, c][!indexc] <- mean(DATArm[[l]][, c][indexc]) #missing values are replaced by column means
         }
       }
         varv=list(varnumv[[m]])
@@ -58,13 +57,13 @@ cv.issvd=function(x,ncomp,varnumv,varnumu,
         model=issvd(DATArm,1,varv,varu, type='soft',maxiter=100,eps=10^(-4))
 
         cv_error=rep(0,K)
-		for(k in 1:K){
-		  a1=model$U%*%model$D[[k]]%*%t(model$V[[k]])
-		  cv_error[k]=sum((a1[ToRemove[[k]]]-x[[k]][ToRemove[[k]]])^2)/sqrt(sum(ToRemove[[k]]))
-		}
-         total_error[i]=sum(cv_error)
+	for(k in 1:K){
+           a1=model$U%*%model$D[[k]]%*%t(model$V[[k]])
+           cv_error[k]=sum((a1[ToRemove[[k]]]-x[[k]][ToRemove[[k]]])^2)/sqrt(sum(ToRemove[[k]]))
 	}
-	     sparse_ratio[m,h]=mean(ratio)
+          total_error[i]=sum(cv_error)
+	}
+	  sparse_ratio[m,h]=mean(ratio)
     }
    }
     varnumv_index=which.min(sparse_ratio)%%len_varv
